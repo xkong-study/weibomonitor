@@ -11,9 +11,9 @@ import java.util.*;
 public class Train {
 
     // 文档列表
-    public static final String POS_DOCS_PATH = "/Users/mdah/Playground/Senti-Corpus/weibo/pos.txt";
+    public static final String POS_DOCS_PATH = "/Users/kong/Desktop/pubsenti-finder/src/main/resources/train/weibo/pos.txt";
     public static ArrayList<String> posDocs = new ArrayList<>();
-    public static final String NEG_DOCS_PATH = "/Users/mdah/Playground/Senti-Corpus/weibo/neg.txt";
+    public static final String NEG_DOCS_PATH = "/Users/kong/Desktop/pubsenti-finder/src/main/resources/train/weibo/neg.txt";
     public static ArrayList<String> negDocs = new ArrayList<>();
 
     // 文档中每个词，及在文档中出现的次数

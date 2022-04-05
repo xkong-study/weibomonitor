@@ -1,5 +1,8 @@
 package cn.marwin.crawler;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import cn.marwin.entity.Weibo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,11 +10,14 @@ import cn.marwin.entity.Comment;
 import cn.marwin.entity.Hot;
 import cn.marwin.util.HttpUtil;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public class WeiboParser {
 
@@ -91,13 +97,19 @@ public class WeiboParser {
                 String user = card.get("mblog").get("user").get("screen_name").asText();       // 该weibo博主的昵称
                 String pic = card.get("mblog").get("user").get("profile_image_url").asText();  // 该weibo博主的头像
                 String url = "https://m.weibo.cn/status/" + id;
-
+                String statuses_count=card.get("mblog").get("user").get("statuses_count").asText();
+                String follow_count = card.get("mblog").get("user").get("follow_count").asText();
+                String followers_count = card.get("mblog").get("user").get("followers_count").asText();
+                String verified_reason = card.get("mblog").get("user").get("verified_reason").asText();
+                String reposts_count=card.get("mblog").get("reposts_count").asText();
+                String comments_count=card.get("mblog").get("comments_count").asText();
+                String attitudes_count=card.get("mblog").get("attitudes_count").asText();
                 // 通过正则从html中获取相应的数据
                 String html = HttpUtil.request(url); // 请求微博的详情页，获取微博全文和详情信息需要
                 String time = getTime(html);
                 String content = getContent(html);
 
-                Weibo weibo = new Weibo(id, user, pic, time, url, content);
+                Weibo weibo = new Weibo(id, user, pic, time, url, content,statuses_count,follow_count,followers_count,reposts_count,comments_count,attitudes_count,verified_reason);
                 weiboList.add(weibo);
             }
         } catch (Exception e) {
@@ -117,7 +129,7 @@ public class WeiboParser {
     public static List<Comment> getCommentList(Weibo weibo, int pageSize) {
         List<Comment> commentList = new ArrayList<>();
         // 请求第一页评论，获取后续页面的参数
-        String next = WeiboParser.parseComment(weibo, commentList, "0", "0");
+        String next = WeiboParser.parseComment(weibo, commentList,"0","0");
         int count = 1;
         while (next != null && !next.equals("00")) {
 
@@ -126,7 +138,7 @@ public class WeiboParser {
             // 拆分 max_id 和 max_id_type
             String max_id_type = next.substring(0, 1);
             String max_id = next.substring(1);
-            next = WeiboParser.parseComment(weibo, commentList, max_id, max_id_type);
+            next = WeiboParser.parseComment(weibo, commentList, max_id_type,max_id);
         }
 
         return commentList;
@@ -136,14 +148,13 @@ public class WeiboParser {
      * 解析微博评论列表，由于需要返回下一页参数且Java不支持元组，评论列表作为参数传入
      * @param weibo 微博
      * @param commentList 评论列表
-     * @param max_id 初始页为"0"
      * @param max_id_type 初始页为"0"
      * @return 请求下一页评论的参数，返回null或"00"时表示已经到底
      */
-    private static String parseComment(Weibo weibo, List<Comment> commentList, String max_id, String max_id_type) {
-        String url = "https://m.weibo.cn/comments/hotflow?id=" + weibo.getId() + "&mid=" + weibo.getId() +
-                "&max_id=" + max_id + "&max_id_type=" + max_id_type;
-
+    static String parseComment(Weibo weibo, List<Comment> commentList, String max_id_type, String max_id) {
+//        String url = "https://m.weibo.cn/comments/hotflow?id=" + weibo.getId() + "&mid=" + weibo.getId() +
+//                "&max_id=" + max_id + "&max_id_type=" + max_id_type;
+        String url = "https://m.weibo.cn/comments/hotflow?id=" + weibo.getId() + "&mid=" + weibo.getId() + "&max_id_type=" + max_id_type;
         JsonNode rootNode;
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -168,13 +179,16 @@ public class WeiboParser {
             JsonNode node = iterator.next();
             String time = node.get("created_at").asText();
             Integer like = node.get("like_count").asInt();
+            Integer id = node.get("id").asInt();
             String text = node.get("text").asText();
-
+            String gender = node.get("user").get("gender").asText();
+            Integer verified = node.get("user").get("verified_type").asInt();
+            Integer follow_count = node.get("user").get("follow_count").asInt();
             text = processText(text); // 过滤html标签
             if (text.trim().equals("")) {continue;} // 跳过空评论
             if (text.equals("图片评论") || text.equals("转发微博")) {continue;} // 跳过无效评论
 
-            Comment comment = new Comment(text, time, like);
+            Comment comment = new Comment(text, time, like,gender,verified,follow_count,id);
             commentList.add(comment);
         }
 
@@ -217,4 +231,6 @@ public class WeiboParser {
         m = html.matcher(text);
         return m.replaceAll("");
     }
+
+
 }

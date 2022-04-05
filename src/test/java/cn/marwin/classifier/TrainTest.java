@@ -5,8 +5,13 @@ import cn.marwin.util.SegmentUtil;
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.dictionary.CustomDictionary;
 import org.junit.jupiter.api.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.annotation.Resource;
+import javax.swing.tree.RowMapper;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 class TrainTest {
@@ -25,14 +30,14 @@ class TrainTest {
      */
     void test() throws IOException {
         // 测试文档路径
-        String posPath = "/Users/mdah/Playground/Senti-Corpus/test/pos.txt";
-        String negPath = "/Users/mdah/Playground/Senti-Corpus/test/neg.txt";
+        String posPath = "/Users/kong/Desktop/pubsenti-finder/src/main/resources/train/weibo/pos.txt";
+        String negPath = "/Users/kong/Desktop/pubsenti-finder/src/main/resources/train/weibo/neg.txt";
         List<String> posComments = FileUtil.fileToList(posPath);
         List<String> negComments = FileUtil.fileToList(negPath);
 
         MyClassifier.init();
         int count = 0;
-        for (String comment: posComments) {
+        for (String comment : posComments) {
             double p = MyClassifier.getScore(comment);
             if (p > 0) {
                 count++;
@@ -42,7 +47,7 @@ class TrainTest {
             }
         }
 
-        for (String comment: negComments) {
+        for (String comment : negComments) {
             double p = MyClassifier.getScore(comment);
             if (p < 0) {
                 count++;
@@ -88,4 +93,6 @@ class TrainTest {
         System.out.println(HanLP.segment(text));
         System.out.println(SegmentUtil.segment(text));
     }
+
+
 }

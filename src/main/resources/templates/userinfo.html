@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src=" https://github.com/rainabba/jquery-table2excel"></script>
+    <style>
+        html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}h1{font-size:2em;margin:0.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace, monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type="checkbox"],input[type="radio"]{-moz-box-sizing:border-box;box-sizing:border-box;padding:0}input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:0.35em 0.625em 0.75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:bold}table{border-collapse:collapse;border-spacing:0}td,th{padding:0}
+
+    </style>
+
+    <style>
+        @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+        body {
+            background: #FFEFD3;
+            font-family: "Open Sans", "Arial";
+        }
+        p {
+            font-size: 13px;
+            margin-left: 350px;
+            height:50px;
+        }
+        input, section {
+            clear: both;
+            padding-top: 10px;
+            display: none;
+        }
+        tablist{
+            height:40px;
+            width:300px;
+            margin-left:300px;
+        }
+        label {
+            font-weight: bold;
+            font-size: 14px;
+            display: block;
+            float: left;
+            padding: 10px 30px;
+            border-top: 2px solid transparent;
+            border-right: 1px solid transparent;
+            border-left: 1px solid transparent;
+            border-bottom: 1px solid #DDD;
+        }
+        label:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        #tab1:checked ~ #content1, #tab2:checked ~ #content2, #tab3:checked ~ #content3, #tab4:checked ~ #content4 {
+            display: block;
+            margin-right:150px;
+        }
+        input:checked + label {
+            text-decoration: none;
+        }
+        * {
+            margin:0;
+            padding:0;
+        }
+        ul,li {
+            list-style:none;
+        }
+        ul {
+            overflow:hidden;
+        }
+        li {
+            float:left;
+            color:#f60;
+            /*padding-left: 30px;*/
+            padding-top: 7px;
+            padding-right:2px;
+            padding-bottom: 3px;
+            margin-right:5px;
+            margin-left: 28px;
+            cursor:pointer;
+            transition:all ease .3s;
+        }
+        .box {
+            width:500px;
+            margin:10px auto;
+            position:relative;
+            height:300px;
+        }
+        li:hover {
+            background:#f90;
+            color:#fff;
+        }
+
+        .content h1 {
+            font-size:10px;
+            margin-bottom:10px;
+            margin-top:10px;
+        }
+        .content p {
+            font-size:10px;
+        }
+        canvas{
+            height:280px;
+            width:350px;
+            margin-top:20px;
+        }
+        h{
+            font-size:20px;
+            color:black;
+            margin-left:50px;
+            margin-top:30px;
+            font-family: "Open Sans", "Arial";
+        }
+        th{
+            width:50px
+        }
+        introduce{
+            width:20px;
+            margin-left: 10px;
+        }
+        td{
+            font-size: 12px;
+            margin-left: 5px;
+        }
+    </style>
+
+    <script src="js/prefixfree.min.js"></script>
+
+    <script src="js/modernizr.js"></script>
+
+    <script src='js/jquery.js'></script>
+
+    <title>告警后端数据记录</title>
+</head>
+
+<body>
+<nav class="navbar shadow sticky-top navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">微博舆论分析</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">主页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/wordShow">词云展示</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user1">用户画像分析</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mood">情绪告警</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/userinfo">告警后端数据记录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/data">数据分析</a>
+                </li>
+                <li style="margin-left: 100px">
+                    <button type="button" class="btn btn-xs btn-info" id="add" name="add" onclick="addNewProduct()"><i class="fa fa-plus"></i> 退出</button>
+                    <img border="0" width="38" height="38"  src = 'https://s3.bmp.ovh/imgs/2022/03/d14ae6e200b9e3c9.jpg' /> <font style="font-size:11px; font-family:Microsoft YaHei">  <th:text text="${user.userId}"></th:text>
+                </font>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script>
+    function addNewProduct(){
+        window.location.href = "/login";
+    }
+    function addNewProduct1(){
+        window.location.href = "http://localhost:8080/user/downloadsExcelDown";
+    }
+</script>
+<button type="button" class="btn btn-xs btn-info" id="add1" name="add" onclick="addNewProduct1()" style="margin-left: 900px;margin-top: 50px"> 导出表格</button>
+<p style="font-size:20px;margin-top:-30px;margin-left: 250px;height:50px">热搜情绪告警日志</p>
+<table style="width:850px;height:50px;margin-left: 200px" border="1" width="50%" align="center" id="table">
+    <tr style="background-color: white;border:1px;width:700px" class="success">
+        <th style="background-color: white;border:1px;width:60px;font-size: 12px">id</th>
+        <th style="background-color: white;border:1px;width:60px;font-size: 12px">提交人姓名</th>
+        <th style="background-color: white;border:1px;width:60px;font-size: 12px">情绪描述</th>
+        <th style="background-color: white;border:1px;width:60px;font-size: 12px">提交人所在部门</th>
+        <th style="background-color: white;border:1px;width:60px;font-size: 12px">提交人工号</th>
+        <th style="background-color: white;border:1px;width:60px;font-size: 12px">热搜名称</th>
+        <th style="background-color: white;border:1px;width:60px;font-size: 12px">热搜排名</th>
+    </tr>
+</table>
+<p style="font-size:20px;margin-top: 100px;margin-left: 250px">热搜情绪分类报错告警</p>
+<p id="demo1">我的第一个段落</p>
+
+
+</div>
+</body>
+
+<script>
+    $.ajax({
+      url:"http://localhost:8080/user/userList",
+      method: "get",
+    success: function (data) {
+        if (data) {
+            var StandStr = "";
+            console.log(data)
+            data.forEach(e => {
+                row = document.getElementById("table").insertRow();
+                if (row != null) {
+                    cell = row.insertCell();
+                    cell.innerHTML = e.id;
+                    cell = row.insertCell();
+                    cell.innerHTML = e.age;
+                    cell = row.insertCell();
+                    cell.innerHTML = e.userAge;
+                    cell = row.insertCell();
+                    cell.innerHTML = e.userId;
+                    cell = row.insertCell();
+                    cell.innerHTML = e.userName;
+                    cell = row.insertCell();
+                    cell.innerHTML =e.weiName;
+                    cell = row.insertCell();
+                    cell.innerHTML =e.weiNo;
+                }
+            });
+
+        }
+    },
+    error: function() {
+    }
+    })
+
+    /**
+
+     * 显示表格内容
+
+     * @param Int id 表格id
+
+     */
+
+
+    $.ajax({
+        url:"http://localhost:8080/feedback?comment=可恨",
+        method: "get",
+        success: function (data) {
+            if (data) {
+                console.log(data)
+                    document.getElementById("demo1").innerHTML = data;
+
+            }
+        },
+        error: function() {
+        }
+    })
+
+
+    /**
+     * table数据导出到excel
+     * 形参 table  : tableId ;
+     *      sheetName : 工作薄名
+     *      fileName  : 文件名
+     *      linkId    ：隐藏的链接控件id
+     */
+    $.ajax({
+        url:"http://localhost:8080/feedback?comment=可恨",
+        method: "get",
+        success: function (data) {
+            if (data) {
+                console.log(data)
+                document.getElementById("demo2").innerHTML = data;
+
+            }
+        },
+        error: function() {
+        }
+    })
+
+
+
+</script>

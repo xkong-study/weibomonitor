@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="../js/jquery-1.11.0.js"></script>
+    <style>
+        html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}h1{font-size:2em;margin:0.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace, monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type="checkbox"],input[type="radio"]{-moz-box-sizing:border-box;box-sizing:border-box;padding:0}input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:0.35em 0.625em 0.75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:bold}table{border-collapse:collapse;border-spacing:0}td,th{padding:0}
+
+    </style>
+
+    <style>
+        @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+        body {
+            background: #FFEFD3;
+            font-family: "Open Sans", "Arial";
+        }
+        p {
+            font-size: 13px;
+        }
+        input, section {
+            clear: both;
+            padding-top: 10px;
+            display: none;
+        }
+        tablist{
+            height:40px;
+            width:300px;
+            margin-left:300px;
+        }
+        label {
+            font-weight: bold;
+            font-size: 14px;
+            display: block;
+            float: left;
+            padding: 10px 30px;
+            border-top: 2px solid transparent;
+            border-right: 1px solid transparent;
+            border-left: 1px solid transparent;
+            border-bottom: 1px solid #DDD;
+        }
+        label:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        #tab1:checked ~ #content1, #tab2:checked ~ #content2, #tab3:checked ~ #content3, #tab4:checked ~ #content4 {
+            display: block;
+            margin-right:150px;
+        }
+        input:checked + label {
+            text-decoration: none;
+        }
+        * {
+            margin:0;
+            padding:0;
+        }
+        ul,li {
+            list-style:none;
+        }
+        ul {
+            overflow:hidden;
+        }
+        li {
+            float:left;
+            color:#f60;
+            /*padding-left: 30px;*/
+            padding-top: 7px;
+            padding-right:2px;
+            padding-bottom: 3px;
+            margin-right:5px;
+            margin-left: 28px;
+            cursor:pointer;
+            transition:all ease .3s;
+        }
+        .box {
+            width:500px;
+            margin:10px auto;
+            position:relative;
+            height:300px;
+        }
+        li:hover {
+            background:#f90;
+            color:#fff;
+        }
+        li.tabin {
+            background:#f90;
+            color:#fff;
+            height:35px;
+            width:110px;
+            padding-left:5px;
+        }
+        .content-box {
+            width:650px;
+            height:500px;
+            position:absolute;
+            left:0;
+            top:30px;
+            overflow:hidden;
+            margin-left:-160px;
+        }
+        .content {
+            clear:both;
+            color:#fff;
+            padding:10px;
+            opacity:0;
+            transition:all ease .3s;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        .contentin {
+            opacity:1;
+            height:500px;
+            width:600px;
+        }
+        .content h1 {
+            font-size:10px;
+            margin-bottom:10px;
+            margin-top:10px;
+        }
+        .content p {
+            font-size:10px;
+        }
+        canvas{
+            height:280px;
+            width:350px;
+            margin-top:20px;
+        }
+        hr { display: block; height: 2px;
+
+            border: 0;
+            border-top: 1px solid red;
+
+            padding: 0;
+            margin-top: 108px;
+            color:red;
+            margin-bottom: -96px
+        }
+
+         a{
+             text-decoration: none;
+             color:grey;
+         }
+        a:hover{
+            color: red;
+        }
+        table{
+            width: 700px;
+            height: 180px;
+            border-collapse: collapse;
+            padding:10px 5px;
+            text-align: center;
+            border-color: white;
+            font-family:"黑体";
+        }
+    </style>
+
+    <script src="js/prefixfree.min.js"></script>
+
+    <script src="js/modernizr.js"></script>
+
+    <script src='js/jquery.js'></script>
+
+    <title>舆论情绪分析</title>
+</head>
+
+<body>
+<nav class="navbar shadow sticky-top navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">微博舆论分析</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">主页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/wordShow">词云展示</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user1">用户画像分析</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mood">情绪告警</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/userinfo">告警后端数据记录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/data">数据分析</a>
+                </li>
+                <li style="margin-left: 100px">
+                    <button type="button" class="btn btn-xs btn-info" id="add" name="add" onclick="addNewProduct()"><i class="fa fa-plus"></i> 退出</button>
+                    <img border="0" width="38" height="38"  src = 'https://s3.bmp.ovh/imgs/2022/03/d14ae6e200b9e3c9.jpg' /> <font style="font-size:11px; font-family:Microsoft YaHei">  <th:text text="${user.userId}"></th:text>
+                </font>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script>
+    function addNewProduct(){
+        window.location.href = "/login";
+    }
+</script>
+<div class="container pt-3">
+    <div class="row">
+        <div class="col-3">
+            <div class="list-group shadow" id="list-tab" role="tablist" style="height:1230px">
+                <a th:each="hot,iterStat: ${hotList}" th:class="(${iterStat.index}==0?'active ':'') + 'd-flex align-items-center list-group-item list-group-item-action'" data-toggle="list" role="tab" aria-controls="profile">
+                    <span class="d-none d-md-block" th:text="${hot.desc}">Hot title</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-9 pl-0">
+            <div class="tab-content" id="nav-tabContent">
+                <div th:each="hot,iterStat: ${hotList}" th:id="'hot' + ${iterStat.index}" th:class="'tab-pane fade' + (${iterStat.index}==0?' show active':'')" role="tabpanel" aria-labelledby="list-profile-list">
+                    <div th:each="weibo: ${hot.weiboList}">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                        <div class="row justify-content-md-center pt-3 pb-3">
+                            <div class="col-12">
+                                <div class="box">
+                                    <div class="content-box">
+                                        <div class="box">
+                                            <strong class="modal-title" style="margin-left: 220px">情绪告警图表</strong>
+                                            <a th:each="hot,iterStat: ${hotList}"><span class="badge" th:if="${hot.status <= -0.5}">😡</span></a>
+                                            <div class="content contentin">
+                                                <hr >
+                                                <p><canvas id="myChart"></canvas></p>
+                                                <hr style="margin-top:-106px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="modal-dialog" role="document" style="margin-top: 80px;margin-left:130px;background-color: rgba(241,203,164,0.71)">
+                                <div class="modal-content" style="background-color: rgba(241,203,164,0.71);">
+                                    <div class="modal-header">
+                                        <strong class="modal-title">反馈</strong>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="feedback-form" style="background-color: rgba(241,203,164,0.71)">
+                                            <div class="form-group">
+                                                <label id="comment-label" class="col-form-label"></label>
+                                                <input id="comment-input" class="form-control"  name="weiName">
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="radio1" class="custom-control-input" name="weiNo" value="热搜一">
+                                                <label class="custom-control-label" for="radio1">热搜一</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="radio2" class="custom-control-input" name="weiNo" value="热搜二">
+                                                <label class="custom-control-label" for="radio2">热搜二</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="radio3" class="custom-control-input" name="weiNo" value="热搜三">
+                                                <label class="custom-control-label" for="radio3">热搜三</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="radio4" class="custom-control-input" name="weiNo" value="热搜四">
+                                                <label class="custom-control-label" for="radio4">热搜四</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="radio5" class="custom-control-input" name="weiNo" value="热搜五">
+                                                <label class="custom-control-label" for="radio5">热搜五</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="radio6" class="custom-control-input" name="weiNo" value="热搜六">
+                                                <label class="custom-control-label" for="radio6">热搜六</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="radio7" class="custom-control-input" name="weiNo" value="热搜七">
+                                                <label class="custom-control-label" for="radio7">热搜七</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="radio8" class="custom-control-input" name="weiNo" value="热搜八">
+                                                <label class="custom-control-label" for="radio8">热搜八</label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="radio9" class="custom-control-input" name="weiNo" value="热搜九">
+                                                <label class="custom-control-label" for="radio9">热搜九</label>
+                                            </div><div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="radio10" class="custom-control-input" name="weiNo" value="热搜十">
+                                            <label class="custom-control-label" for="radio10">热搜十</label>
+                                            </br>
+                                        </div>
+                                            </br>
+                                            提交人姓名：<input input id="comment-input1" class="form-control"  name="age">
+                                            提交人工号：<input input id="comment-input2" class="form-control"  name="userName">
+                                            提交人所在部门：<input input id="comment-input3" class="form-control"  name="userId">
+                                            情绪描述：<input input id="comment-input4" class="form-control"  name="userAge">
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" id="submit">提交</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="modal-dialog" role="document" style="margin-top: 80px;margin-left:60px">
+                            <div class="modal-body">
+                                <strong class="modal-title">日志记录</strong>
+                        <table style="width:600px;height:50px" border="1" width="50%" align="center" id="table">
+                            <tr style="background-color: white;border:1px">
+                                <th style="background-color: white;border:1px">热搜名称</th><th style="background-color: white;border:1px">热搜排名</th>
+                                <th style="background-color: white;border:1px">提交人姓名</th><th style="background-color: white;border:1px">提交人工号</th>
+                                <th style="background-color: white;border:1px">提交人所在部门</th><th style="background-color: white;border:1px">情绪描述</th>
+                            </tr>
+                        </table>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
+<script>
+    var feedList=[];
+    $('#modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var text = button.data('text');
+        $('#comment-label').text(text);
+        $('#comment-input').val(text);
+    });
+    $('#submit').click(function () {
+        var weiName = $('#comment-input').val();
+        var weiNo = $("input[name='weiNo']:checked").val();
+        var age=$('#comment-input1').val();
+        var userName=$('#comment-input2').val();
+        var userId=$('#comment-input3').val();
+        var userAge=$('#comment-input4').val();
+        var form = {'weiName': weiName, 'weiNo': weiNo,'age': age ,'userName': userName,'userId': userId,'userAge': userAge};
+        row = document.getElementById("table").insertRow();
+        console.log(userId);
+        if (row != null) {
+            cell = row.insertCell();
+            cell.innerHTML = weiName;
+            cell = row.insertCell();
+            cell.innerHTML = weiNo;
+            cell = row.insertCell();
+            cell.innerHTML = age;
+            cell = row.insertCell();
+            cell.innerHTML = userName;
+            cell = row.insertCell();
+            cell.innerHTML = userId;
+            cell = row.insertCell();
+            cell.innerHTML =userAge;
+        }
+         console.log(weiNo);
+
+
+        $.ajax({
+            url: "user/addUser",
+            method: "post",
+            data: form,
+            success: function (data) {
+                if (data) {
+                    console.log(data)
+                }
+            },
+            error: function () {
+            }
+        })
+    })
+
+
+</script>
+<script th:inline="javascript">
+    var nameList=[]
+    const hotList = [[${hotList}]];
+    for (let hot of hotList) {
+        let city = hot.status;
+        nameList.push(city)}
+        console.log(this.nameList)
+          var ctx = document.getElementById("myChart").getContext("2d");
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                title: '用户数据分析',
+                data: {
+                    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+                    datasets: [
+                        {
+                            data: this.nameList,
+                            backgroundColor: "rgba(71, 157, 255, 0.08)",
+                            borderColor: "rgba(0, 119, 255, 1)",
+                            pointBackgroundColor: "rgba(56, 96, 244, 1)",
+                            pointBorderColor: "rgba(255, 255, 255, 1)",
+                            markLine: {
+                                data: [
+                                    // 1st line we want to draw
+                                    [
+                                        // start point of the line
+                                        // we have to defined line attributes only here (not in the end point)
+                                        {
+                                            xAxis: 0.5,
+                                            yAxis: 0.5,
+                                            symbol: 'none',
+                                            lineStyle: {
+                                                normal: {
+                                                    color: "#00F"
+                                                }
+                                            },
+                                            label: {
+                                                normal: {
+                                                    show: true,
+                                                    position: 'end',
+                                                    formatter: 'my label'
+                                                }
+                                            }
+                                        }]]
+                            }
+                        }]
+                }
+            })
+
+</script>
+
+
+<!--</script>-->
+</body>
+</html>
+
+<!doctype html>
+<html>
+<style>
+    @charset "utf-8";
+    /*公共样式*/
+    html{font-family:"Helvetica Neue",Helvetica,STHeiTi,sans-serif;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+    body{-webkit-overflow-scrolling:touch;margin:0;}
+    ul{margin:0;padding:0;list-style:none;outline:none;}
+    dl,dd{margin:0;}
+    a{display:inline-block;margin:0;padding:0;text-decoration:none;background:transparent;outline:none;color:#000;}
+    a:link,a:visited,a:hover,a:active{text-decoration:none;color:currentColor;}
+    a,dt,dd{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;}
+    img{border:0;}
+    p{margin:0;}
+    input,button,select,textarea{margin:0;padding:0;border:0;outline:0;background-color:transparent;}
+    /*css reset*/
+    body {
+        position: relative;
+    }
+
+    .dialogue-wrapper {
+        font-size: 14px;
+        color: #fff;
+    }
+    /*右侧点击按钮*/
+    .dialogue-wrapper .dialogue-support-btn {
+        position: fixed;
+        display: inline-block;
+        top: 50%;
+        right: 0;
+        margin-top: -70px;
+        padding: 10px 0;
+        width: 40px;
+        height: 150px;
+        font-size: 16px;
+        font-weight: 500;
+        text-align: center;
+        cursor: pointer;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, .4);
+        background-color: #5d94f3;
+    }
+
+    .dialogue-wrapper .dialogue-support-btn .dialogue-support-icon {
+        position: relative;
+        display: inline-block;
+        margin-bottom: -2px;
+        width: 20px;
+        height: 16px;
+        border-radius: 4px;
+        background-color: #fff;
+    }
+
+    .dialogue-wrapper .dialogue-support-btn .dialogue-support-icon:before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: -6px;
+        margin-left: -3px;
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 6px solid #fff;
+    }
+
+    .dialogue-wrapper .dialogue-support-btn .dialogue-support-line {
+        display: inline-block;
+        width: 100%;
+        height: 1px;
+        background-color: #ddd;
+    }
+
+    .dialogue-wrapper .dialogue-support-btn .dialogue-support-text {
+        padding: 5px 0;
+        letter-spacing: 4px;
+        writing-mode: vertical-rl;
+        -webkit-user-select: none;
+    }
+
+    /*底部客服对话框*/
+    .dialogue-wrapper .dialogue-main {
+        position: fixed;
+        display: none;
+        right: 100px;
+        bottom: 10px;
+        width: 400px;
+        height: 600px;
+        border-radius: 4px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+    }
+
+    /*客服对话框头部*/
+    .dialogue-wrapper .dialogue-main .dialogue-header {
+        position: relative;
+        padding: 10px;
+        height: 80px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+        background-color: #5d94f3;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        padding: 2px;
+        font-size: 22px;
+        transform: rotate(90deg);
+        cursor: pointer;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-service-info {
+        position: relative;
+        top: 50%;
+        margin-top: -20px;
+        height: 40px;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-service-img {
+        display: inline-block;
+        margin: 0 10px 0 20px;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        vertical-align: middle;
+        color: #000;
+        border-radius: 50%;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, .2);
+        background-color: #fff;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-service-title {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-service-detail {
+        font-size: 12px;
+    }
+
+    /*客服对话框内容*/
+    .dialogue-wrapper .dialogue-main .dialogue-contain {
+        overflow-y: auto;
+        padding: 10px;
+        height: 380px;
+        word-wrap: break-word;
+        background-color: #f9f9f9;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-text {
+        display: inline-block;
+        position: relative;
+        padding: 10px;
+        max-width: 120px;
+        white-space: pre-wrap;
+        border: 1px solid #09d07d;
+        border-radius: 4px;
+        background-color: #09d07d;
+        box-sizing: border-box;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-service-contain {
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-service-text {
+        margin-left: 20px;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-service-text:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -10px;
+        width: 0;
+        height: 0;
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-right: 10px solid #09d07d;
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-customer-contain {
+        margin-bottom: 10px;
+        text-align: right;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-customer-text {
+        margin-right: 20px;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-customer-text:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: -10px;
+        width: 0;
+        height: 0;
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-left: 10px solid #09d07d;
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+    }
+
+    /*客服对话框底部与输入*/
+    .dialogue-wrapper .dialogue-main .dialogue-submit {
+        position: relative;
+        padding: 10px;
+        height: 100px;
+        color: #000;
+        word-wrap: break-word;
+        border-top: 1px solid #ddd;
+        box-sizing: border-box;
+    }
+
+    /*空输入提示*/
+    .dialogue-wrapper .dialogue-main .dialogue-hint {
+        position: absolute;
+        top: -15px;
+        left: 20px;
+        padding: 2px;
+        width: 140px;
+        height: 18px;
+        opacity: 0;
+        font-size: 12px;
+        text-align: center;
+        line-height: 18px;
+        border: 1px solid #ddd;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, .4);
+        background-color: #fff;
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-hint-icon {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        margin-right: 5px;
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 700;
+        vertical-align: middle;
+        line-height: 18px;
+        color: #fff;
+        border-radius: 50%;
+        background-color: #5d94f3
+    }
+
+    .dialogue-wrapper .dialogue-main .dialogue-hint-text {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    /*输入框*/
+    .dialogue-wrapper .dialogue-submit .dialogue-input-text {
+        overflow-y: auto;
+        display: inline-block;
+        padding: 5px 10px;
+        width: 295px;
+        height: 70px;
+        vertical-align: middle;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        resize: none;
+        border-right: 1px solid #ddd;
+        box-sizing: border-box;
+    }
+
+    .dialogue-wrapper .dialogue-submit .dialogue-input-tools {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        vertical-align: middle;
+    }
+
+</style>
+<head>
+    <meta charset="utf-8">
+    <title>于飞SEO客服聊天</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
+
+</head>
+<body>
+<div class="dialogue-wrapper">
+    <div id="btn_open" class="dialogue-support-btn">
+        <i class="dialogue-support-icon"></i>
+        <i class="dialogue-support-line"></i>
+        <span class="dialogue-support-text">告警平台</span>
+    </div>
+    <div class="dialogue-main" style="background-color: white">
+        <div class="dialogue-header">
+            <i id="btn_close" class="dialogue-main"><</i>
+            <div class="dialogue-service-info">
+                <i class="dialogue-service-img">头像</i>
+                <div class="dialogue-service-title">
+                    <p class="dialogue-service-name">运维部门</p>
+                    <p class="dialogue-service-detail">运维支持平台</p>
+                </div>
+            </div>
+        </div>
+        <div id="dialogue_contain" class="dialogue-contain"style="background-color: white">
+            <p class="dialogue-service-contain"><span class="dialogue-text dialogue-service-text">您好，请提问</span></p>
+            <!-- <p class="dialogue-customer-contain"><span class="dialogue-text dialogue-customer-text">我有个问题</span></p> -->
+        </div>
+        <div class="dialogue-submit"style="background-color: white">
+            <p id="dialogue_hint" class="dialogue-hint"><span class="dialogue-hint-icon">!</span><span class="dialogue-hint-text">发送内容不能为空</span></p>
+            <textarea id="dialogue_input" style="background-color: white" class="dialogue-input-text" placeholder="请输入您的问题，按Enter键提交（shift+Enter换行）"></textarea>
+        </div>
+    </div>
+</div>
+<script>
+    var doc = document;
+    // 模拟一些后端传输数据
+    var serviceData = {
+        'robot': {
+            'name': 'robot001',
+            'dialogue': ['收到', '收到', '收到'],
+            'welcome': '您好，请输入需要的告警'
+        }
+    };
+
+    var dialogueInput = doc.getElementById('dialogue_input'),
+        dialogueContain = doc.getElementById('dialogue_contain'),
+        dialogueHint = doc.getElementById('dialogue_hint'),
+        btnOpen = doc.getElementById('btn_open'),
+        btnClose = doc.getElementById('btn_close'),
+        timer,
+        timerId,
+        shiftKeyOn = false;  // 辅助判断shift键是否按住
+
+    btnOpen.addEventListener('click', function(e) {
+        $('.dialogue-support-btn').css({'display': 'none'});
+        $('.dialogue-main').css({'display': 'inline-block', 'height': '0'});
+        $('.dialogue-main').animate({'height': '600px'})
+    })
+
+    btnClose.addEventListener('click', function(e) {
+        $('.dialogue-main').animate({'height': '0'}, function() {
+            $('.dialogue-main').css({'display': 'none'});
+            $('.dialogue-support-btn').css({'display': 'inline-block'});
+        });
+    })
+
+    dialogueInput.addEventListener('keydown', function(e) {
+        var e = e || window.event;
+        if (e.keyCode == 16) {
+            shiftKeyOn = true;
+        }
+        if (shiftKeyOn) {
+            return true;
+        } else if (e.keyCode == 13 && dialogueInput.value == '') {
+            // console.log('发送内容不能为空');
+            // 多次触发只执行最后一次渐隐
+            setTimeout(function() {
+                fadeIn(dialogueHint);
+                clearTimeout(timerId)
+                timer = setTimeout(function() {
+                    fadeOut(dialogueHint)
+                }, 2000);
+            }, 10);
+            timerId = timer;
+            return true;
+        } else if (e.keyCode == 13) {
+            var nodeP = doc.createElement('p'),
+                nodeSpan = doc.createElement('span');
+            nodeP.classList.add('dialogue-customer-contain');
+            nodeSpan.classList.add('dialogue-text', 'dialogue-customer-text');
+            nodeSpan.innerHTML = dialogueInput.value;
+            nodeP.appendChild(nodeSpan);
+            dialogueContain.appendChild(nodeP);
+            dialogueContain.scrollTop = dialogueContain.scrollHeight;
+            submitCustomerText(dialogueInput.value);
+        }
+    });
+
+    dialogueInput.addEventListener('keyup', function(e) {
+        var e = e || window.event;
+        if (e.keyCode == 16) {
+            shiftKeyOn = false;
+            return true;
+        }
+        if (!shiftKeyOn && e.keyCode == 13) {
+            dialogueInput.value = null;
+        }
+    });
+
+    function submitCustomerText(text) {
+        console.log(text)
+        // code here 向后端发送text内容
+
+        // 模拟后端回复
+        var num = Math.random() * 10;
+        if (num <= 7) {
+            getServiceText(serviceData);
+        }
+    }
+
+    function getServiceText(data) {
+        var serviceText = data.robot.dialogue,
+            i = Math.floor(Math.random() * serviceText.length);
+        var nodeP = doc.createElement('p'),
+            nodeSpan = doc.createElement('span');
+        nodeP.classList.add('dialogue-service-contain');
+        nodeSpan.classList.add('dialogue-text', 'dialogue-service-text');
+        nodeSpan.innerHTML = serviceText[i];
+        nodeP.appendChild(nodeSpan);
+        dialogueContain.appendChild(nodeP);
+        dialogueContain.scrollTop = dialogueContain.scrollHeight;
+    }
+
+    // 渐隐
+    function fadeOut(obj) {
+        var n = 100;
+        var time = setInterval(function() {
+            if (n > 0) {
+                n -= 10;
+                obj.style.opacity = '0.' + n;
+            } else if (n <= 30) {
+                obj.style.opacity = '0';
+                clearInterval(time);
+            }
+        }, 10);
+        return true;
+    }
+
+    // 渐显
+    function fadeIn(obj) {
+        var n = 30;
+        var time = setInterval(function() {
+            if (n < 90) {
+                n += 10;
+                obj.style.opacity = '0.' + n;
+            } else if (n >= 80) {
+
+                obj.style.opacity = '1';
+                clearInterval(time);
+            }
+        }, 100);
+        return true;
+    }
+</script>
+</body>
+</html>
+
+

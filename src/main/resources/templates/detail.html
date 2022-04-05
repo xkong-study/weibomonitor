@@ -14,6 +14,130 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <style>
+        @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+        body {
+            background: #FFEFD3;
+            font-family: "Open Sans", "Arial";
+        }
+        p {
+            font-size: 13px;
+        }
+        input, section {
+            clear: both;
+            padding-top: 10px;
+            display: none;
+        }
+        tablist{
+            height:40px;
+            width:300px;
+            margin-left:300px;
+        }
+        label {
+            font-weight: bold;
+            font-size: 14px;
+            display: block;
+            float: left;
+            padding: 10px 30px;
+            border-top: 2px solid transparent;
+            border-right: 1px solid transparent;
+            border-left: 1px solid transparent;
+            border-bottom: 1px solid #DDD;
+        }
+        label:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        #tab1:checked ~ #content1, #tab2:checked ~ #content2, #tab3:checked ~ #content3, #tab4:checked ~ #content4 {
+            display: block;
+            margin-right:150px;
+        }
+        input:checked + label {
+            text-decoration: none;
+        }
+        * {
+            margin:0;
+            padding:0;
+        }
+        ul,li {
+            list-style:none;
+        }
+        ul {
+            overflow:hidden;
+        }
+        li {
+            float:left;
+            color:#f60;
+            /*padding-left: 30px;*/
+            padding-top: 7px;
+            padding-right:2px;
+            padding-bottom: 3px;
+            margin-right:5px;
+            margin-left: 28px;
+            cursor:pointer;
+            transition:all ease .3s;
+        }
+        .box {
+            width:500px;
+            margin:10px auto;
+            position:relative;
+            height:300px;
+        }
+        li:hover {
+            background:#f90;
+            color:#fff;
+        }
+        li.tabin {
+            background:#f90;
+            color:#fff;
+            height:35px;
+            width:110px;
+            padding-left:5px;
+        }
+        .content-box {
+            width:550px;
+            height:450px;
+            position:absolute;
+            left:0;
+            top:30px;
+            overflow:hidden;
+        }
+        .content {
+            clear:both;
+            color:#fff;
+            padding:10px;
+            opacity:0;
+            transition:all ease .3s;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        .contentin {
+            opacity:1;
+            height:350px;
+            width:400px;
+        }
+        .content h1 {
+            font-size:10px;
+            margin-bottom:10px;
+            margin-top:10px;
+        }
+        .content p {
+            font-size:10px;
+        }
+        canvas{
+            height:280px;
+            width:350px;
+            margin-top:20px;
+        }
+    </style>
+
+    <script src="js/prefixfree.min.js"></script>
+
+    <script src="js/modernizr.js"></script>
+
+    <script src='js/jquery.js'></script>
     <title>微博详情</title>
 </head>
 
@@ -31,8 +155,26 @@
                         <a class="nav-link" href="/">主页</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/marwincn">源码</a>
+                        <a class="nav-link" href="/wordShow">词云展示</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user1">用户画像分析</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mood">情绪告警</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userinfo">告警后端数据记录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/data">数据分析</a>
+                    </li>
+                    <li style="margin-left: 150px">
+                        <button type="button"  class="btn btn-danger" ,onclick="exitu()">退出</button>
+                        <img border="0" width="38" height="38"  src = 'https://s3.bmp.ovh/imgs/2022/03/d14ae6e200b9e3c9.jpg' /> <font style="font-size:11px; font-family:Microsoft YaHei">  <th:text text="${user.userId}"></th:text>
+                    </font>
+                    </li>
+
                 </ul>
             </div>
         </div>

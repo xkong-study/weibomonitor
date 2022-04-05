@@ -4,7 +4,7 @@ import java.io.*;
 
 public class MyClassifier {
 
-    public static final String MODEL_PATH = "/Users/mdah/Playground/Senti-Corpus/weibo-model";
+    public static final String MODEL_PATH = "/Users/kong/Desktop/pubsenti-finder/src/main/resources/train/weibo-model";
     public static Model model;
 
     /**

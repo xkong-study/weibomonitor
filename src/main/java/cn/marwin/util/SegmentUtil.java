@@ -13,12 +13,12 @@ import java.util.stream.Stream;
 
 public class SegmentUtil {
     // 自定义词典
-    public static final String CUSTOMWORDS_PATH = "/Users/mdah/Playground/Senti-Corpus/customwords.txt";
+    public static final String CUSTOMWORDS_PATH = "/Users/kong/Desktop/pubsenti-finder/src/main/resources/Senti-Corpus/customwords.txt";
     // 停用词表
-    public static final String STOPWORDS_PATH = "/Users/mdah/Playground/Senti-Corpus/cn_stopwords.txt";
+    public static final String STOPWORDS_PATH = "/Users/kong/Desktop/pubsenti-finder/src/main/resources/Senti-Corpus/cn_stopwords.txt";
     public static Set<String> stopWords = new HashSet<>();
     // 否定词表
-    public static final String NONWORDS_PATH = "/Users/mdah/Playground/Senti-Corpus/cn_nonwords.txt";
+    public static final String NONWORDS_PATH = "/Users/kong/Desktop/pubsenti-finder/src/main/resources/Senti-Corpus/cn_nonwords.txt";
     public static Set<String> nonWords = new HashSet<>();
     // 分割符集合
     public static final Set<String> SPLITWORDS;

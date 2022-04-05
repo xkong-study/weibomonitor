@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <style>
+            html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}h1{font-size:2em;margin:0.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace, monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type="checkbox"],input[type="radio"]{-moz-box-sizing:border-box;box-sizing:border-box;padding:0}input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:0.35em 0.625em 0.75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:bold}table{border-collapse:collapse;border-spacing:0}td,th{padding:0}
+
+        </style>
+
+        <style>
+            @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+            body {
+                background: #FFEFD3;
+                font-family: "Open Sans", "Arial";
+            }
+            p {
+                font-size: 13px;
+            }
+            input, section {
+                clear: both;
+                padding-top: 10px;
+                display: none;
+            }
+            tablist{
+                height:40px;
+                width:300px;
+                margin-left:300px;
+            }
+            label {
+                font-weight: bold;
+                font-size: 14px;
+                display: block;
+                float: left;
+                padding: 10px 30px;
+                border-top: 2px solid transparent;
+                border-right: 1px solid transparent;
+                border-left: 1px solid transparent;
+                border-bottom: 1px solid #DDD;
+            }
+            label:hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+            #tab1:checked ~ #content1, #tab2:checked ~ #content2, #tab3:checked ~ #content3, #tab4:checked ~ #content4 {
+                display: block;
+                margin-right:150px;
+            }
+            input:checked + label {
+                text-decoration: none;
+            }
+            * {
+                margin:0;
+                padding:0;
+            }
+            ul,li {
+                list-style:none;
+            }
+            ul {
+                overflow:hidden;
+            }
+            li {
+                float:left;
+                color:#f60;
+                /*padding-left: 30px;*/
+                padding-top: 7px;
+                padding-right:2px;
+                padding-bottom: 3px;
+                margin-right:5px;
+                margin-left: 28px;
+                cursor:pointer;
+                transition:all ease .3s;
+            }
+            .box {
+                width:500px;
+                margin:10px auto;
+                position:relative;
+                height:300px;
+            }
+            li:hover {
+                background:#f90;
+                color:#fff;
+            }
+            li.tabin {
+                background:#f90;
+                color:#fff;
+                height:35px;
+                width:110px;
+                padding-left:5px;
+            }
+            .content-box {
+                width:550px;
+                height:450px;
+                position:absolute;
+                left:0;
+                top:30px;
+                overflow:hidden;
+            }
+            .content {
+                clear:both;
+                color:#fff;
+                padding:10px;
+                opacity:0;
+                transition:all ease .3s;
+                position:absolute;
+                top:0;
+                left:0;
+            }
+            .contentin {
+                opacity:1;
+                height:350px;
+                width:400px;
+            }
+            .content h1 {
+                font-size:10px;
+                margin-bottom:10px;
+                margin-top:10px;
+            }
+            .content p {
+                font-size:10px;
+            }
+            canvas{
+                height:280px;
+                width:350px;
+                margin-top:20px;
+            }
+        </style>
+
+        <script src="js/prefixfree.min.js"></script>
+
+        <script src="js/modernizr.js"></script>
+
+        <script src='js/jquery.js'></script>
+
+    <title>微博舆情分析系统</title>
+</head>
+
+<body>
+    <nav class="navbar shadow sticky-top navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">微博舆论分析</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">主页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/wordShow">词云展示</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user1">用户画像分析</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mood">情绪告警</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userinfo">告警后端数据记录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/data">数据分析</a>
+                    </li>
+                    <li style="margin-left: 100px">
+                        <button type="button" class="btn btn-xs btn-info" id="add" name="add" onclick="addNewProduct()"><i class="fa fa-plus"></i> 退出</button>
+                        <img border="0" width="38" height="38"  src = 'https://s3.bmp.ovh/imgs/2022/03/d14ae6e200b9e3c9.jpg' /> <font style="font-size:11px; font-family:Microsoft YaHei">  <th:text text="${user.userId}"></th:text>
+                    </font>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <script>
+        function addNewProduct(){
+            window.location.href = "/login";
+        }
+    </script>
+    <div class="container pt-3">
+        <div class="row">
+            <div class="col-3">
+                <div class="list-group shadow" id="list-tab" role="tablist" style="height:1230px">
+                    <a th:each="hot,iterStat: ${hotList}" th:href="'#hot' + ${iterStat.index}" th:class="(${iterStat.index}==0?'active ':'') + 'd-flex align-items-center list-group-item list-group-item-action'" data-toggle="list" role="tab" aria-controls="profile">
+                        <span class="badge" th:if="${hot.status >= 0.5}">👏</span>
+                        <span class="badge" th:if="${hot.status >= 0.05 && hot.status < 0.5}">🤣</span>
+                        <span class="badge" th:if="${hot.status < 0.05 && hot.status > -0.05}">👤</span>
+                        <span class="badge" th:if="${hot.status <= -0.05 && hot.status > -0.5}">😠</span>
+                        <span class="badge" th:if="${hot.status <= -0.5}">😡</span>
+                        <span class="d-none d-md-block" th:text="${hot.desc}">Hot title</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-9 pl-0">
+                <div class="tab-content" id="nav-tabContent">
+                    <div th:each="hot,iterStat: ${hotList}" th:id="'hot' + ${iterStat.index}" th:class="'tab-pane fade' + (${iterStat.index}==0?' show active':'')" role="tabpanel" aria-labelledby="list-profile-list">
+                        <div th:each="weibo: ${hot.weiboList}">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card shadow">
+                                        <div class="card-body">
+                                            <h6 class="card-title">
+                                                <img th:src="${weibo.pic}" style="width: 2rem; height: 2rem; border-radius: 50%;">
+                                                <p class="card-text">发布微博数：</p>
+                                                <p class="card-text" style="margin-top:-31px;margin-left:75px"th:utext="${weibo.statuses_count}"></p>
+                                            </h6>
+                                            <p class="card-subtitle mb-2 text-muted" th:text="${weibo.time}">Card subtitle</p>
+                                            <p id="box">
+                                            <p class="card-text" th:utext="${weibo.content}">Card content.</p>
+                                            </p>
+                                            <script>
+                                                window.onload=function(){
+                                                    var inp=document.getElementsByTagName("input");
+                                                    var oP=document.getElementById("box");
+
+                                                    inp[1].onclick=function(){
+                                                        var str = inp[0].value;
+                                                        if (!str)return; //若内容不存在即返回
+                                                        oP.innerHTML=oP.innerHTML.split(str).join('<span>'+str+'</span>')
+                                                    }
+                                                };
+
+                                            </script>
+                                            <a th:href="${weibo.url}" class="card-link">Weibo link</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-md-center pt-3 pb-3">
+                                <div class="col-12">
+                                    <div class="box">
+                                        <ul id="tablist">
+                                            <li><a href="/">评论情绪分类</a></li>
+                                            <li><a href="/sex">用户性别研究</a></li>
+                                            <li><a href="/verified">用户认证比例</a></li>
+                                        </ul>
+                                        <div class="content-box">
+                                            <div class="content contentin">
+                                                <p><canvas th:id="'chart' + ${weibo.id}" style="height:170px;width:300px"></canvas></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                <!--                            <div class="row justify-content-md-center pt-3 pb-3">-->
+<!--                                <div class="col-12">-->
+<!--                                    <div class="card shadow">-->
+<!--                                        <canvas th:id="'chart' + ${weibo.id}" class="m-2"></canvas>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="row">
+                                <div class="col-12">
+                                    <ul class="list-group shadow list-group-flush">
+                                        <li class="list-group-item" th:each="comment: ${weibo.comments}">
+                                            <span th:text="${comment.text}">Comment</span>
+                                            <div class="flex-row float-right">
+                                                <span class="badge badge-pill badge-light mr-2" th:text="'👍' + ${comment.like}"></span>
+                                                <span class="badge badge-pill badge-primary" data-toggle="modal" data-target="#modal" th:attr="data-text=${comment.text}" th:if="${comment.score > 0}">Positive</span>
+                                                <span class="badge badge-pill badge-secondary" data-toggle="modal" data-target="#modal" th:attr="data-text=${comment.text}" th:if="${comment.score == 0}">Neutral</span>
+                                                <span class="badge badge-pill badge-danger" data-toggle="modal" data-target="#modal" th:attr="data-text=${comment.text}" th:if="${comment.score < 0}">Negative</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a th:href="@{/detail(key=${weibo.key})}" class="card-link float-right p-3">查看更多评论...</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <strong class="modal-title">反馈</strong>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="feedback-form">
+                        <div class="form-group">
+                            <label id="comment-label" class="col-form-label"></label>
+                            <input id="comment-input" class="form-control" type="hidden" name="comment">
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="radio1" class="custom-control-input" name="sentiment" value="pos">
+                            <label class="custom-control-label" for="radio1">🤣</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="radio2" class="custom-control-input" name="sentiment" value="neg">
+                            <label class="custom-control-label" for="radio2">😠</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="submit">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //退出登录
+        //退出登录
+
+
+        $('#modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var text = button.data('text');
+            $('#comment-label').text(text)
+            $('#comment-input').val(text);
+        });
+        $('#submit').click(function () {
+            var comment = $('#comment-input').val();
+            var sentiment =$("input[name='sentiment']:checked").val();
+            var form = {'comment': comment,'sentiment':sentiment};
+            console.log(form);
+            $.ajax({
+                type: "get",
+                url: "/feedback",
+                data: form,
+                success: function () {
+                    $('#modal').modal('hide');
+                }
+            });
+        })
+    </script>
+    <script th:inline="javascript">
+        const hotList = [[${hotList}]];
+        for (let hot of hotList) {
+            for (let weibo of hot.weiboList) {
+                const ctx = document.getElementById('chart' + weibo.id);
+                const myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Negative', 'Neutral', 'Positive'],
+                        datasets: [{
+                            data: [weibo.negCount, weibo.otherCount, weibo.posCount],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(200, 200, 200, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(200, 200, 200, 0.2)',
+                                'rgba(54, 162, 235, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {}
+                });
+                    }
+                }
+
+
+                // $(document).ready(function () {
+                //     $("#tablist li").each(function (index) {
+                //         $(this).click(function () {
+                //             $(".contentin").removeClass("contentin");
+                //             $(".tabin").removeClass("tabin");
+                //             $(".content-box div").eq(index).addClass("contentin");
+                //             $(this).addClass("tabin")
+                //         });
+                //     })
+                // })
+
+    </script>
+</body>
+
+</html>

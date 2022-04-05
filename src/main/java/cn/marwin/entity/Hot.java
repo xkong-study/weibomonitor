@@ -10,7 +10,7 @@ public class Hot {
     // 加工信息
     private double status;
     private List<Weibo> weiboList;
-
+    private int perNum;
     public Hot() {}
 
     public Hot(String desc, String scheme) {
@@ -50,4 +50,12 @@ public class Hot {
     public void setStatus(double status) {
         this.status = status;
     }
+    public int getPerNum() {
+        return perNum;
+    }
+
+    public void setPerNum(int perNum) {
+        this.perNum = perNum;
+    }
+
 }
